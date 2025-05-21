@@ -5,8 +5,8 @@ Tuneatch es una API RESTful construida con Express.js que gestiona una plataform
 ## 🗃️ Estructura de Base de Datos
 
 - **user** (`id`, `username`, `password`, `profile_picture`)
-- **rol** (`id`, `name`)
-- **user_role** (`user_id`, `rol_id`)
+- **role** (`id`, `name`)
+- **user_role** (`user_id`, `role_id`)
 - **artist** (`id`, `name`, `image_path`)
 - **album** (`id`, `title`, `artist_id`, `image_path`)
 - **genre** (`id`, `name`)
@@ -76,6 +76,16 @@ Tuneatch es una API RESTful construida con Express.js que gestiona una plataform
 | POST   | `/api/playlists`   | Crear playlist            |
 | PUT    | `/api/playlists`   | Actualizar playlist       |
 | DELETE | `/api/playlists/{id}`| Eliminar playlist       |
+
+### 📤 Subida de archivos
+| Método | Endpoint                   | Key     | Descripción                   |
+| ------ | -------------------------- | ------- | ----------------------------- |
+| POST   | `/api/upload/song/media`   | `media` | Subir audio para una canción  |
+| POST   | `/api/upload/song/image`   | `image` | Subir imagen para una canción |
+| POST   | `/api/upload/artist/image` | `image` | Subir imagen para un artista  |
+| POST   | `/api/upload/album/image`  | `image` | Subir imagen para un álbum    |
+| POST   | `/api/upload/user/image`   | `image` | Subir imagen para un usuario  |
+
 
 ## 🚀 Instalación y ejecución
 
