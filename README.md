@@ -82,5 +82,5 @@ Tuneatch es una API RESTful construida con Express.js que gestiona una plataform
 
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/tuusuario/tunatch-api.git
+   git clone https://github.com/SashOso/tunatch-api.git
    cd tunatch-api
