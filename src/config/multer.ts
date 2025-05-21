@@ -5,7 +5,7 @@ import fs from 'fs';
 const root = path.resolve(__dirname, '..', '..', 'uploads');
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (req, _file, cb) => {
     let folder = '';
     if (req.url.includes('/song/media')) folder = 'song/media';
     else if (req.url.includes('/song/image')) folder = 'song/image';
