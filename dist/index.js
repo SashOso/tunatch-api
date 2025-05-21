@@ -15,12 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 const data_source_1 = require("./config/data-source");
 const app_1 = __importDefault(require("./app"));
+const env_1 = require("./config/env");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             data_source_1.AppDataSource.initialize();
-            app_1.default.listen(8080, () => {
-                console.log("Servidor corriendo en: http:/localhost:8080");
+            app_1.default.listen(env_1.PORT, () => {
+                console.log(`Server is running at: \x1b[4mhttp://localhost:${env_1.PORT}\x1b[0m`);
             });
         }
         catch (error) {

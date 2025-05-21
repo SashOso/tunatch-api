@@ -9,31 +9,26 @@ const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const root = path_1.default.resolve(__dirname, '..', '..', 'uploads');
 const storage = multer_1.default.diskStorage({
-    destination: (req, file, cb) => {
+    destination: (req, _file, cb) => {
         let folder = '';
-        if (req.url.includes('/song/media')) {
+        if (req.url.includes('/song/media'))
             folder = 'song/media';
-        }
-        else if (req.url.includes('/song/image')) {
+        else if (req.url.includes('/song/image'))
             folder = 'song/image';
-        }
-        else if (req.url.includes('/artist/image')) {
+        else if (req.url.includes('/artist/image'))
             folder = 'artist/image';
-        }
-        else if (req.url.includes('/user/image')) {
+        else if (req.url.includes('/user/image'))
             folder = 'user/image';
-        }
-        else if (req.url.includes('/album/image')) {
+        else if (req.url.includes('/album/image'))
             folder = 'album/image';
-        }
-        else {
+        else
             folder = 'others';
-        }
         const fullPath = path_1.default.join(root, folder);
         //crear la carpeta si no exite
         if (!fs_1.default.existsSync(fullPath)) {
             fs_1.default.mkdirSync(fullPath, { recursive: true });
         }
+        req.uploadFolder = folder;
         cb(null, fullPath);
     },
     filename: (req, file, cb) => {

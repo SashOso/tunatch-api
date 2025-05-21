@@ -30,9 +30,8 @@ const getAll = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.json(data);
     }
     catch (error) {
-        if (error instanceof Error) {
-            res.status(500).json({ message: error.message });
-        }
+        res.status(500).json({ message: "Internal server error" });
+        return;
     }
 });
 exports.getAll = getAll;
@@ -42,14 +41,14 @@ const getOne = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const item = yield Playlist_1.Playlist.findOne({ where: { id: parseInt(id) } });
         if (!item) {
             res.status(404).json({ message: "Not found" });
+            return;
         }
-        //const data = new PublicPlaylistDTO(item);
-        res.json(item);
+        const data = new PublicPlaylistDTO_1.PublicPlaylistDTO(item);
+        res.json(data);
     }
     catch (error) {
-        if (error instanceof Error) {
-            res.status(500).json({ message: error.message });
-        }
+        res.status(500).json({ message: "Internal server error" });
+        return;
     }
 });
 exports.getOne = getOne;
@@ -61,9 +60,8 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.json(item);
     }
     catch (error) {
-        if (error instanceof Error) {
-            res.status(500).json({ message: error.message });
-        }
+        res.status(500).json({ message: "Internal server error" });
+        return;
     }
 });
 exports.create = create;
@@ -72,7 +70,8 @@ const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const _a = req.body, { id } = _a, data = __rest(_a, ["id"]);
         const item = yield Playlist_1.Playlist.findOne({ where: { id: parseInt(id) } });
         if (!item) {
-            throw new Error('Not found');
+            res.status(404).json({ message: "Not found" });
+            return;
         }
         Object.assign(item, data);
         if (data.songs) {
@@ -82,9 +81,8 @@ const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).json(item);
     }
     catch (error) {
-        if (error instanceof Error) {
-            res.status(500).json({ message: error.message });
-        }
+        res.status(500).json({ message: "Internal server error" });
+        return;
     }
 });
 exports.update = update;
@@ -100,9 +98,8 @@ const remove = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).json({ message: "Deleted successfully" });
     }
     catch (error) {
-        if (error instanceof Error) {
-            res.status(500).json({ message: error.message });
-        }
+        res.status(500).json({ message: "Internal server error" });
+        return;
     }
 });
 exports.remove = remove;

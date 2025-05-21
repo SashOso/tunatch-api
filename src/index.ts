@@ -1,12 +1,13 @@
 import "reflect-metadata";
 import {AppDataSource} from './config/data-source';
 import app from './app';
+import { PORT } from "./config/env";
 
 async function main(){
     try{
         AppDataSource.initialize();
-        app.listen(8080,()=>{
-            console.log("Servidor corriendo en: http:/localhost:8080");
+        app.listen(PORT,()=>{
+            console.log(`Server is running at: \x1b[4mhttp://localhost:${PORT}\x1b[0m`);
         });
     }catch(error){
         console.error(error)

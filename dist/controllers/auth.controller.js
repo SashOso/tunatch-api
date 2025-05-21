@@ -27,55 +27,51 @@ exports.me = exports.login = exports.register = void 0;
 const User_1 = require("../entities/User");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jwt_1 = require("../utils/jwt");
+const PublicUserDTO_1 = require("../dtos/PublicUserDTO");
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const _a = req.body, { username, password } = _a, rest = __rest(_a, ["username", "password"]);
-        // Verificar si ya existe un usuario con el mismo username
-        const existingUser = yield User_1.User.findOne({ where: { username } });
-        if (existingUser) {
+        const _a = req.body, { id, username, password } = _a, rest = __rest(_a, ["id", "username", "password"]);
+        const user = yield User_1.User.findOne({ where: { username } });
+        if (user) {
             res.status(400).json({ error: 'Username already exists' });
+            return;
         }
-        // Encriptar la contraseña antes de guardarla
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
-        const user = User_1.User.create(Object.assign({ username, password: hashedPassword }, rest));
-        // Guardar el usuario en la base de datos
-        const createdUser = yield user.save();
-        // Eliminar la contraseña del objeto de respuesta
-        const { password: _ } = createdUser, publicUser = __rest(createdUser, ["password"]);
-        // Devolver el usuario creado sin la contraseña
-        res.status(201).json(publicUser); // Aquí siempre debes devolver la respuesta
+        const new_user = User_1.User.create(Object.assign({ username, password: hashedPassword }, rest));
+        const created_user = yield new_user.save();
+        const publicUser = new PublicUserDTO_1.PublicUserDTO(created_user);
+        res.status(201).json(publicUser);
     }
     catch (error) {
-        // Si ocurre un error, devolverlo con un código de estado 500
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ message: "Internal server error" });
+        return;
     }
 });
 exports.register = register;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { username, password } = req.body;
-        // Verificar que se pasen username y password
         if (!username || !password) {
-            throw new Error("Username and password are required");
+            res.status(400).json({ message: "Username and password are required" });
+            return;
         }
-        // Buscar al usuario en la base de datos
         const user = yield User_1.User.findOne({ where: { username } });
         if (!user) {
-            throw new Error("Username does not exist");
+            res.status(401).json({ message: "Username does not exist" });
+            return;
         }
-        // Verificar si la contraseña es válida
         const isValid = yield bcrypt_1.default.compare(password, user.password);
         if (!isValid) {
-            throw new Error("Password is invalid");
+            res.status(401).json({ message: "Password is invalid" });
+            return;
         }
-        // Crear un objeto para el usuario sin la contraseña
-        const publicUser = { id: user.id, username: user.username };
-        // Generar el token JWT
-        const token = (0, jwt_1.generateToken)(publicUser);
-        res.set('Authorization', `Bearer ${token}`).json({ jwt: token, roles: [] });
+        const token = (0, jwt_1.generateToken)({ sub: user.id, username: username });
+        const roles = (user.roles || []).map(role => role.name);
+        res.set('Authorization', `Bearer ${token}`).json({ jwt: token, roles });
     }
     catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ message: "Internal server error" });
+        return;
     }
 });
 exports.login = login;
