@@ -1,66 +1,55 @@
-import {Request,Response} from 'express'
-import { User } from '../entities/User'
+import {Request,Response} from 'express';
+import { User } from '../entities/User';
 import bcrypt from 'bcrypt';
 import {generateToken} from '../utils/jwt';
+import { PublicUserDTO } from '../dtos/PublicUserDTO';
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response): Promise<void>  => {
   try {
-    const { username, password, ...rest } = req.body;
+    const { id, username, password, ...rest } = req.body;
 
-    // Verificar si ya existe un usuario con el mismo username
-    const existingUser = await User.findOne({ where: { username } });
-    if (existingUser) {  res.status(400).json({ error: 'Username already exists' }); }
+    const user = await User.findOne({ where: { username } });
+    if (user) {  res.status(400).json({ error: 'Username already exists' });return; }
 
-    // Encriptar la contraseña antes de guardarla
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = User.create({
+    const new_user = User.create({
       username,
       password: hashedPassword,
       ...rest,
     });
 
-    // Guardar el usuario en la base de datos
-    const createdUser = await user.save();
+    const created_user = await new_user.save();
 
-    // Eliminar la contraseña del objeto de respuesta
-    const { password: _, ...publicUser } = createdUser;
+    const publicUser = new PublicUserDTO(created_user);
 
-    // Devolver el usuario creado sin la contraseña
-     res.status(201).json(publicUser);  // Aquí siempre debes devolver la respuesta
+     res.status(201).json(publicUser);
   } catch (error: any) {
-    // Si ocurre un error, devolverlo con un código de estado 500
-     res.status(500).json({ error: error.message });
+    res.status(500).json({ message: "Internal server error" }); 
+    return;
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response): Promise<void>  => {
   try {
     const { username, password } = req.body;
+    if (!username || !password) {res.status(400).json({ message: "Username and password are required" }); return;}
 
-    // Verificar que se pasen username y password
-    if (!username || !password) { throw new Error("Username and password are required"); }
-
-    // Buscar al usuario en la base de datos
     const user = await User.findOne({ where: { username } });
-    if (!user) { throw new Error("Username does not exist"); }//401
+    if (!user) {res.status(401).json({ message: "Username does not exist" });return;}
 
-    // Verificar si la contraseña es válida
     const isValid = await bcrypt.compare(password, user.password);
-    if (!isValid) { throw new Error("Password is invalid"); }//401
+    if (!isValid) {res.status(401).json({ message: "Password is invalid" });return;}
 
-    // Generar el token JWT
     const token = generateToken({sub:user.id,username:username});
-    //obtener lo roles
-    const roles=user.roles.map(role => role.name);
-    
+    const roles = (user.roles || []).map(role => role.name);
     res.set('Authorization', `Bearer ${token}`).json({ jwt: token, roles });
   } catch (error: any) {
-     res.status(500).json({ error: error.message});
+    res.status(500).json({ message: "Internal server error" }); 
+    return;
   }
 };
 
-export const me = async (req: Request, res: Response) => {
+export const me = async (req: Request, res: Response): Promise<void>  => {
   const user = (req as any).user;
   res.json(user);
 };

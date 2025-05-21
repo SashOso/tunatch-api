@@ -1,17 +1,16 @@
 import { Request, Response } from 'express';
 
-export const uploadController = (req: Request, res: Response) => {
+export const uploadController = (req: Request, res: Response):void => {
   try{
-    if (!req.file) throw new Error('No file uploaded');
+    if (!req.file) {res.status(400).json({ message: 'No file uploaded' });return;}
 
     const folder = (req as any).uploadFolder;
-    if (!folder) throw new Error('Upload folder information missing');
+    if (!folder) {res.status(400).json({ message: 'Upload folder information missing' });return;}
 
     const path = `/${folder}/${req.file.filename}`;
     res.status(200).json({path: path});
   }catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ message: error.message });
-    }
+    res.status(500).json({ message: "Internal server error" }); 
+    return;
   }
 };
