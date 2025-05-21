@@ -1,7 +1,7 @@
-import {Router} from 'express';
+import express from 'express';
 import {create, getAll, remove, update,getOne} from '../controllers/playlist.controller';
 
-const router = Router();
+const router = express.Router();
 
 router.post('/', create);
 router.get('/', getAll);
