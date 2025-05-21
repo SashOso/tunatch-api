@@ -23,6 +23,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
     // Llamamos a next() para pasar al siguiente middleware
     next();
   } catch (error: any) {
-    res.status(401).json({ error: 'Invalid or expired token' });
+    res.status(401).json({ error: 'Invalid token' });
+    return;
   }
 };

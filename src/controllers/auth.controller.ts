@@ -43,19 +43,18 @@ export const login = async (req: Request, res: Response) => {
 
     // Buscar al usuario en la base de datos
     const user = await User.findOne({ where: { username } });
-    if (!user) { throw new Error("Username does not exist"); }
+    if (!user) { throw new Error("Username does not exist"); }//401
 
     // Verificar si la contraseña es válida
     const isValid = await bcrypt.compare(password, user.password);
-    if (!isValid) { throw new Error("Password is invalid"); }
-
-    // Crear un objeto para el usuario sin la contraseña
-    const publicUser = { id: user.id, username: user.username };
+    if (!isValid) { throw new Error("Password is invalid"); }//401
 
     // Generar el token JWT
-    const token = generateToken(publicUser);
-
-    res.set('Authorization', `Bearer ${token}`).json({ jwt: token, roles: [] });
+    const token = generateToken({sub:user.id,username:username});
+    //obtener lo roles
+    const roles=user.roles.map(role => role.name);
+    
+    res.set('Authorization', `Bearer ${token}`).json({ jwt: token, roles });
   } catch (error: any) {
      res.status(500).json({ error: error.message});
   }
