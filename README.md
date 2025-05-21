@@ -16,67 +16,48 @@ Tuneatch es una API RESTful construida con Express.js que gestiona una plataform
 - **favorite_playlist** (`user_id`, `playlist_id`)
 - **favorite_album** (`user_id`, `album_id`)
 
-## 🔐 Autenticación
 
-- POST `/api/auth/register` - Registrar un nuevo usuario
-- POST `/api/auth/login` - Iniciar sesión
-- POST `/api/auth/me` - Obtener información del usuario autenticado
+### 🧑‍💼 Autenticación
+| Método | Endpoint             | Descripción                 |
+|--------|----------------------|-----------------------------|
+| POST   | `/api/auth/register` | Registrar un nuevo usuario |
+| POST   | `/api/auth/login`    | Iniciar sesión              |
+| POST   | `/api/auth/me`       | Obtener usuario actual      |
 
-## 👤 Usuarios
+### 👥 Usuarios
+| Método | Endpoint         | Descripción                   |
+|--------|------------------|-------------------------------|
+| GET    | `/api/users`     | Obtener todos los usuarios    |
+| GET    | `/api/users/{id}`| Obtener usuario por ID        |
+| PUT    | `/api/users`     | Actualizar usuario            |
+| DELETE | `/api/users/{id}`| Eliminar usuario              |
 
-- GET `/api/users` - Obtener todos los usuarios
-- GET `/api/users/{id}` - Obtener un usuario por ID
-- PUT `/api/users` - Actualizar usuario
-- DELETE `/api/users/{id}` - Eliminar usuario por ID
+### 🔐 Roles
+| Método | Endpoint         | Descripción                  |
+|--------|------------------|------------------------------|
+| GET    | `/api/roles`     | Obtener todos los roles      |
+| GET    | `/api/roles/{id}`| Obtener rol por ID           |
+| POST   | `/api/roles`     | Crear un nuevo rol           |
+| PUT    | `/api/roles`     | Actualizar rol               |
+| DELETE | `/api/roles/{id}`| Eliminar rol                 |
 
-## 🔒 Roles
+### 🎤 Artistas
+| Método | Endpoint           | Descripción                    |
+|--------|--------------------|--------------------------------|
+| GET    | `/api/artists`     | Obtener todos los artistas     |
+| GET    | `/api/artists/{id}`| Obtener artista por ID         |
+| POST   | `/api/artists`     | Crear nuevo artista            |
+| PUT    | `/api/artists`     | Actualizar artista             |
+| DELETE | `/api/artists/{id}`| Eliminar artista               |
 
-- GET `/api/rols` - Obtener todos los roles
-- GET `/api/rols/{id}` - Obtener rol por ID
-- POST `/api/rols` - Crear un nuevo rol
-- PUT `/api/rols` - Actualizar rol
-- DELETE `/api/rols/{id}` - Eliminar rol
-
-## 🎤 Artistas
-
-- GET `/api/artists` - Obtener todos los artistas
-- GET `/api/artists/{id}` - Obtener artista por ID
-- POST `/api/artists` - Crear nuevo artista
-- PUT `/api/artists` - Actualizar artista
-- DELETE `/api/artists/{id}` - Eliminar artista
-
-## 💿 Álbumes
-
-- GET `/api/albums` - Obtener todos los álbumes
-- GET `/api/albums/{id}` - Obtener álbum por ID
-- POST `/api/albums` - Crear nuevo álbum
-- PUT `/api/albums` - Actualizar álbum
-- DELETE `/api/albums/{id}` - Eliminar álbum
-
-## 🎧 Géneros
-
-- GET `/api/genres` - Obtener todos los géneros
-- GET `/api/genres/{id}` - Obtener género por ID
-- POST `/api/genres` - Crear nuevo género
-- PUT `/api/genres` - Actualizar género
-- DELETE `/api/genres/{id}` - Eliminar género
-
-## 🎵 Canciones
-
-- GET `http://localhost:3000/api/songs` - Obtener todas las canciones
-- GET  `/api/songs/{id}` - Obtener canción por ID
-- POST  `/api/songs` - Crear nueva canción
-- PUT  `/api/songs` - Actualizar canción
-- DELETE `/api/songs/{id}` - Eliminar canción
-
-## 📂 Playlists
-
-- GET `/api/playlists` - Obtener todas las playlists
-- GET `/api/playlists/{id}` - Obtener playlist por ID
-- POST `/api/playlists` - Crear nueva playlist
-- PUT `/api/playlists` - Actualizar playlist
-- DELETE `/api/playlists/{id}` - Eliminar playlist
-
+### 💿 Álbumes
+| Método | Endpoint         | Descripción               |
+|--------|------------------|---------------------------|
+| GET    | `/api/albums`    | Obtener todos los álbumes |
+| GET    | `/api/albums/{id}`| Obtener álbum por ID     |
+| POST   | `/api/albums`    | Crear álbum               |
+| PUT    | `/api/albums`    | Actualizar álbum          |
+| DELETE | `/api/albums/{id}`| Eliminar álbum           |
 
 ### 🎧 Canciones
 | Método | Endpoint         | Descripción              |
@@ -86,6 +67,15 @@ Tuneatch es una API RESTful construida con Express.js que gestiona una plataform
 | POST   | `/api/songs`     | Crear canción               |
 | PUT    | `/api/songs`     | Actualizar canción          |
 | DELETE | `/api/songs/{id}`| Eliminar canción           |
+
+### 📂 Playlists
+| Método | Endpoint           | Descripción               |
+|--------|--------------------|---------------------------|
+| GET    | `/api/playlists`   | Obtener todas las playlists |
+| GET    | `/api/playlists/{id}`| Obtener playlist por ID |
+| POST   | `/api/playlists`   | Crear playlist            |
+| PUT    | `/api/playlists`   | Actualizar playlist       |
+| DELETE | `/api/playlists/{id}`| Eliminar playlist       |
 
 ## 🚀 Instalación y ejecución
 
