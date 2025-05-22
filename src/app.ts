@@ -6,7 +6,7 @@ const app=express();
 
 app.use(morgan('dev'));
 app.use(express.json());
-app.use('/upload', express.static('uploads'));
+app.use('/upload', express.static('upload'));
 app.use(cors(
     {
         origin: 'http://localhost:4200',
